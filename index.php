@@ -1,36 +1,44 @@
 <?php
+if (!empty($_POST['usuario']) && !empty($_POST['senha'])) { //imprimindo superglobal post
+    $dsn = 'mysql:host=localhost;dbname=php_pdo'; //data source name
+    $user = 'root';
+    $senha = '';
 
-$dsn = 'mysql:host=localhost;dbname=php_pdo'; //data source name
-$user = 'root';
-$senha = '';
+    try {
+        $conexao = new PDO($dsn, $usuario, $senha);
 
-try {
-    $conexao = new PDO($dsn, $user, $senha);
+        //query
+        $query = "select * from tb_usuarios where";
+        $query .= "email = '{$_POST['usuario']}'";
+        $query .= "AND senha = '{$_POST['senha']}'";
+        echo $query;
 
-    $query = '
-        select * from tb_usuarios
-    ';
+        $stmt = $conexao->query($query);
+        $usuario = $stmt->fetch();
+        print_r($usuario);
 
-    //$stmt = $conexao->query($query); //stmt - statement //query - retorna um pdo statement
-    foreach($conexao->query($query) as $chave => $valor){
-        echo '<pre>';
-        print_r($valor['nome']);
-        echo '<hr>';
-        echo '</pre>';
+    } catch (PDOException $e) {
+        echo 'Erro: ' . $e->getCode() . ' Mensagem: ' . $e->getMessage();
     }
-    //$lista_usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC); //retorna todos os registros retornados da consulta
-
-    /*echo '<pre>';
-    print_r($lista_usuarios);
-    echo '</pre>';*/
-
-    /*foreach ($lista_usuarios as $key => $value) {
-        echo $value['nome'];
-        echo '<hr>';
-    }*/
-
-} catch (PDOException $e) {
-    echo 'Erro: ' . $e->getCode() . ' Mensagem: ' . $e->getMessage();
-    //registrar erro - importante, pois com a correção de erros naturalmente a aplicação se torna mais consistente
 }
+
 ?>
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Login</title>
+</head>
+
+<body>
+    <form method="post" action="index.php"><!--método + local onde ação será feita-->
+        <input type="text" placeholder="usuário" name="usuario">
+        <br>
+        <input type="password" placeholder="senha" name="senha">
+        <br>
+        <button type="submit">Entrar</button>
+    </form>
+</body>
+
+</html>
