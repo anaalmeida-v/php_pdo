@@ -8,21 +8,17 @@ try {
     $conexao = new PDO($dsn, $user, $senha);
 
     $query = '
-    create table if not exists tb_usuarios(
-        id int not null primary key auto_increment,
-        nome varchar(50) not null,
-        email varchar(100) not null,
-        senha varchar(32) not null 
-    )';
-    $retorno = $conexao->exec($query); //método espera especificamente a query
-    //retorno esperado - 0
-    echo $retorno;
-
-    $query = '
-        delete from tb_usuarios   
+        select * from tb_usuarios
     ';
-    $retorno = $conexao->exec($query);
-    echo $retorno;
+
+    $stmt = $conexao->query($query); //stmt - statement //query - retorna um pdo statement
+    $lista = $stmt->fetchAll(); //retorna todos os registros retornados da consulta
+
+    echo '<pre>';
+    print_r($lista);
+    echo '</pre>';
+
+    echo $lista[1][1];
 
 } catch (PDOException $e) {
     echo 'Erro: ' . $e->getCode() . ' Mensagem: ' . $e->getMessage();
