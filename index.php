@@ -8,17 +8,17 @@ try {
     $conexao = new PDO($dsn, $user, $senha);
 
     $query = '
-        select * from tb_usuarios
+        select * from tb_usuarios order by nome desc limit 1
     ';
 
     $stmt = $conexao->query($query); //stmt - statement //query - retorna um pdo statement
-    $lista = $stmt->fetchAll(PDO::FETCH_OBJ); //retorna todos os registros retornados da consulta
+    $usuario = $stmt->fetch(PDO::FETCH_ASSOC); //retorna todos os registros retornados da consulta
 
     echo '<pre>';
-    print_r($lista);
+    print_r($usuario);
     echo '</pre>';
 
-    echo $lista[1]->nome;
+    echo $usuario['nome'];
 
 } catch (PDOException $e) {
     echo 'Erro: ' . $e->getCode() . ' Mensagem: ' . $e->getMessage();
