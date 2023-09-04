@@ -12,13 +12,13 @@ try {
     ';
 
     $stmt = $conexao->query($query); //stmt - statement //query - retorna um pdo statement
-    $lista = $stmt->fetchAll(); //retorna todos os registros retornados da consulta
+    $lista = $stmt->fetchAll(PDO::FETCH_OBJ); //retorna todos os registros retornados da consulta
 
     echo '<pre>';
     print_r($lista);
     echo '</pre>';
 
-    echo $lista[1][1];
+    echo $lista[1]->nome;
 
 } catch (PDOException $e) {
     echo 'Erro: ' . $e->getCode() . ' Mensagem: ' . $e->getMessage();
